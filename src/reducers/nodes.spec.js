@@ -20,6 +20,21 @@ describe('Reducers::Nodes', () => {
     name: null
   };
 
+  const blocks = [
+    {
+      id: 1,
+      attributes: {
+        data: 'The Human Torch'
+      }
+    },
+    {
+      id: 2,
+      attributes: {
+        data: 'is denied'
+      }
+    }
+  ];
+
   it('should set initial state by default', () => {
     const action = { type: 'unknown' };
     const expected = getInitialState();
@@ -85,6 +100,66 @@ describe('Reducers::Nodes', () => {
           online: false,
           name: 'alpha',
           loading: false
+        },
+        nodeB
+      ]
+    };
+
+    expect(reducer(appState, action)).toEqual(expected);
+  });
+
+  it('should handle FETCH_NODE_BLOCKS_START', () => {
+    const appState = {
+      list: [nodeA, nodeB]
+    };
+    const action = { type: ActionTypes.FETCH_NODE_BLOCKS_START, node: nodeA };
+    const expected = {
+      list: [
+        {
+          ...nodeA,
+          loadingBlocks: true,
+          errorLoadingBlocks: null
+        },
+        nodeB
+      ]
+    };
+
+    expect(reducer(appState, action)).toEqual(expected);
+  });
+
+  it('should handle FETCH_NODE_BLOCKS_SUCCESS', () => {
+    const appState = {
+      list: [nodeA, nodeB]
+    };
+    const action = { type: ActionTypes.FETCH_NODE_BLOCKS_SUCCESS, node: nodeA, res: { data: blocks }   };
+    const expected = {
+      list: [
+        {
+          ...nodeA,
+          loadingBlocks: false,
+          blocks
+        },
+        nodeB
+      ]
+    };
+
+    expect(reducer(appState, action)).toEqual(expected);
+  });
+
+  it('should handle FETCH_NODE_BLOCKS_FAILURE', () => {
+    const appState = {
+      list: [
+        nodeA,
+        nodeB
+      ]
+    };
+    const action = { type: ActionTypes.FETCH_NODE_BLOCKS_FAILURE, node: nodeA };
+    const expected = {
+      list: [
+        {
+          ...nodeA,
+          loadingBlocks: false,
+          errorLoadingBlocks: "Error loading blocks",
         },
         nodeB
       ]

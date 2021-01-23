@@ -21,7 +21,7 @@ describe('Actions', () => {
   //   expect(actual).toEqual(expected);
   // });
 
-  it('should create an action to save fuel savings', () => {
+  it('should create an action to check node status', () => {
     const dispatch = jest.fn();
     const expected = {
       type: ActionTypes.CHECK_NODE_STATUS_START,
@@ -36,5 +36,17 @@ describe('Actions', () => {
     expect(dispatch).toBeCalledWith(expected);
   });
 
+  it('should create an action to fetch Node Blocks', () => {
+    const dispatch = jest.fn();
+    const expected = {
+      type: ActionTypes.FETCH_NODE_BLOCKS_START,
+      node
+    };
 
+    expect(typeof (ActionCreators.fetchNodeBlocks(node))).toEqual('function');
+
+    ActionCreators.fetchNodeBlocks(node)(dispatch);
+
+    expect(dispatch).toBeCalledWith(expected);
+  });
 });

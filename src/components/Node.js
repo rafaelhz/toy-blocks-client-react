@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import colors from "../constants/colors";
 import Status from "./Status";
+import BlocksList from "./BlocksList";
 
 const Node = ({ node, expanded, toggleNodeExpanded }) => {
   const classes = useStyles();
@@ -19,7 +20,7 @@ const Node = ({ node, expanded, toggleNodeExpanded }) => {
       elevation={3}
       className={classes.root}
       expanded={expanded}
-      onChange={() => toggleNodeExpanded(node)}
+      onChange={(_event, expanded) => toggleNodeExpanded(node, expanded)}
     >
       <ExpansionPanelSummary
         className={classes.summary}
@@ -46,7 +47,7 @@ const Node = ({ node, expanded, toggleNodeExpanded }) => {
         </Box>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
-        <Typography>Blocks go here</Typography>
+        <BlocksList blocks={node.blocks} error={node.errorLoadingBlocks} loading={node.loadingBlocks}  />
       </ExpansionPanelDetails>
     </ExpansionPanel>
   );
